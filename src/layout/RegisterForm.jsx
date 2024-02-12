@@ -21,13 +21,13 @@ export default function RegisterForm() {
       e.preventDefault();
       // Check for password confirmation
       if (input.password !== input.confirmPassword) {
-        return alert('Please check confirm password');
+        return alert('กรุณาตรวจสอบรหัสผ่านที่ยืนยัน');
       }
       // Send data to the server
       const response = await axios.post('http://localhost:3000/auth/register', input);
       console.log(response);
       if (response.status === 200) {
-        alert('Register Successful');
+        alert('ลงทะเบียนสำเร็จ');
       }
     } catch (err) {
       console.log(err.message);
@@ -35,86 +35,86 @@ export default function RegisterForm() {
   };
 
   return (
-    <div className="p-5 border w-4/6 min-w-[500px] mx-auto rounded mt-5 ">
-      <div className="text-3xl mb-5">Register Form</div>
-      <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
-        <label className="form-control w-full max-w-xs">
-          <div className="label">
-            <span className="label-text">First Name</span>
+    <div className="flex items-center justify-center min-h-screen bg-red-200">
+      <div className="p-8 border rounded-lg shadow-lg bg-white">
+        <h2 className="text-3xl text-center mb-4">แบบฟอร์มลงทะเบียน</h2>
+        <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex flex-col">
+              <label htmlFor="firstName" className="label-text">ชื่อ</label>
+              <input
+                id="firstName"
+                type="text"
+                className="input input-bordered"
+                name="firstName"
+                value={input.firstName}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="flex flex-col">
+              <label htmlFor="lastName" className="label-text">นามสกุล</label>
+              <input
+                id="lastName"
+                type="text"
+                className="input input-bordered"
+                name="lastName"
+                value={input.lastName}
+                onChange={handleInputChange}
+              />
+            </div>
           </div>
-          <input
-            type="text"
-            className="input input-bordered w-full max-w-xs"
-            name="firstName"
-            value={input.firstName}
-            onChange={handleInputChange}
-          />
-        </label>
-        <label className="form-control w-full max-w-xs">
-          <div className="label">
-            <span className="label-text">Last Name</span>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex flex-col">
+              <label htmlFor="phoneNumber" className="label-text">เบอร์โทรศัพท์</label>
+              <input
+                id="phoneNumber"
+                type="text"
+                className="input input-bordered"
+                name="phoneNumber"
+                value={input.phoneNumber}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="flex flex-col">
+              <label htmlFor="email" className="label-text">อีเมล</label>
+              <input
+                id="email"
+                type="text"
+                className="input input-bordered"
+                name="email"
+                value={input.email}
+                onChange={handleInputChange}
+              />
+            </div>
           </div>
-          <input
-            type="text"
-            className="input input-bordered w-full max-w-xs"
-            name="lastName"
-            value={input.lastName}
-            onChange={handleInputChange}
-          />
-        </label>
-        <label className="form-control w-full max-w-xs">
-          <div className="label">
-            <span className="label-text">Phone Number</span>
+          <div className="flex flex-col">
+            <label htmlFor="password" className="label-text">รหัสผ่าน</label>
+            <input
+              id="password"
+              type="password"
+              className="input input-bordered"
+              name="password"
+              value={input.password}
+              onChange={handleInputChange}
+            />
           </div>
-          <input
-            type="text"
-            className="input input-bordered w-full max-w-xs"
-            name="phoneNumber"
-            value={input.phoneNumber}
-            onChange={handleInputChange}
-          />
-        </label>
-        <label className="form-control w-full max-w-xs">
-          <div className="label">
-            <span className="label-text">Email</span>
+          <div className="flex flex-col">
+            <label htmlFor="confirmPassword" className="label-text">ยืนยันรหัสผ่าน</label>
+            <input
+              id="confirmPassword"
+              type="password"
+              className="input input-bordered"
+              name="confirmPassword"
+              value={input.confirmPassword}
+              onChange={handleInputChange}
+            />
           </div>
-          <input
-            type="email"
-            className="input input-bordered w-full max-w-xs"
-            name="email"
-            value={input.email}
-            onChange={handleInputChange}
-          />
-        </label>
-        <label className="form-control w-full max-w-xs">
-          <div className="label">
-            <span className="label-text">Password</span>
+          <div className="flex justify-end">
+            <button type="submit" className="btn btn-primary">สมัคร</button>
+            <button type="reset" className="btn btn-secondary ml-2">รีเซ็ต</button>
           </div>
-          <input
-            type="password"
-            className="input input-bordered w-full max-w-xs"
-            name="password"
-            value={input.password}
-            onChange={handleInputChange}
-          />
-        </label>
-        <label className="form-control w-full max-w-xs">
-          <div className="label">
-            <span className="label-text">Confirm Password</span>
-          </div>
-          <input
-            type="password"
-            className="input input-bordered w-full max-w-xs"
-            name="confirmPassword"
-            value={input.confirmPassword}
-            onChange={handleInputChange}
-          />
-        </label>
-        <div className="flex gap-5 ">
-          <button type="submit" className="btn btn-outline btn-info mt-7">Submit</button>
-          <button type="reset" className="btn btn-outline btn-warning mt-7">Reset</button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 }

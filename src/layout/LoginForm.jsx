@@ -6,95 +6,62 @@ export default function LoginForm() {
   const { setUser } = useAuth();
   const [input, setInput] = useState({
     email: '', 
-    password: '',
-    role: 'USER' // Default role
+    password: ''
   });
 
-  const hdlChange = e => {
+  const handleChange = e => {
     setInput(prevState => ({ ...prevState, [e.target.name]: e.target.value }));
   };
 
-  const hdlSubmit = async e => {
+  const handleSubmit = async e => {
+    e.preventDefault();
     try {
-      e.preventDefault();
-      // validation
-      const rs = await axios.post('http://localhost:3000/auth/login', input);
-      console.log(rs.data.token);
-      localStorage.setItem('token', rs.data.token);
-      const rs1 = await axios.get('http://localhost:3000/auth/me', {
-        headers: { Authorization: `Bearer ${rs.data.token}` }
+
+      const response = await axios.post('http://localhost:3000/auth/login', input);
+      
+      localStorage.setItem('token', response.data.token);
+      
+      const userResponse = await axios.get('http://localhost:3000/auth/me', {
+        headers: { Authorization: `Bearer ${response.data.token}` }
       });
-      console.log('rs1',rs1.data);
-      setUser(rs1.data);
+      
+      setUser(userResponse.data);
     } catch(err) {
-      console.log(err.message);
+      console.error('Login failed:', err);
     }
   };
+
   return (
-    
-    <div className="p-5 border w-4/6 min-w-[500px] mx-auto rounded mt-5 ">
-      <div className="text-3xl mb-5">Please Login</div>
-      <form className="flex flex-col gap-2" onSubmit={hdlSubmit}>
-        <label className="form-control w-full max-w-xs">
-          <div className="label">
-            <span className="label-text">Email</span>
-          </div>
-          <input
-            type="text"
-            className="input input-bordered w-full max-w-xs"
-            name="email"
-            value={input.email}
-            onChange={hdlChange}
-          />
-        </label>
+    <div className="flex items-center justify-center min-h-screen bg-red-200">
+      <div className="p-8 border rounded-lg shadow-lg bg-white">
+        <div className="text-3xl text-center mb-5">เข้าสู่ระบบ</div>
+        <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+          <label className="flex flex-col">
+            <span className="text-sm font-semibold">อีเมล</span>
+            <input
+              type="text"
+              className="input input-bordered"
+              name="email"
+              value={input.email}
+              onChange={handleChange}
+            />
+          </label>
+          <label className="flex flex-col">
+            <span className="text-sm font-semibold">รหัสผ่าน</span>
+            <input
+              type="password"
+              className="input input-bordered"
+              name="password"
+              value={input.password}
+              onChange={handleChange}
+            />
+          </label>
 
-        <label className="form-control w-full max-w-xs">
-          <div className="label">
-            <span className="label-text">Password</span>
-          </div>
-          <input
-            type="password"
-            className="input input-bordered w-full max-w-xs"
-            name="password"
-            value={input.password}
-            onChange={hdlChange}
-          />
-        </label>
-
-        <div className="form-control w-full max-w-xs">
-          <div className="label">
-            <span className="label-text"></span>
-          </div>
-          <div className="flex items-center">
-            <label className="inline-flex items-center">
-              <input
-                type="radio"
-                className="form-radio"
-                name="role"
-                value="USER"
-                checked={input.role === 'USER'}
-                onChange={hdlChange}
-              />
-              <span className="ml-2">User</span>
-            </label>
-            <label className="inline-flex items-center ml-6">
-              <input
-                type="radio"
-                className="form-radio"
-                name="role"
-                value="ADMIN"
-                checked={input.role === 'ADMIN'}
-                onChange={hdlChange}
-              />
-              <span className="ml-2">Admin</span>
-            </label>
-          </div>
-        </div>
-
-        <div className="flex gap-5 ">
-          <button type="submit" className="btn btn-outline btn-info mt-7">Login</button>
-        </div>
-      </form>
+          <button type="submit" className="btn btn-primary mt-1">เข้าสู่ระบบ</button>
+          <button type="submit" className="btn btn-primary mt-1">Login with Facebook </button>
+          <div className="text-sm text-center mb-5 ">เข้าสู่ระบบ / ลืมรหัส</div>
+        </form>
+      </div>
     </div>
   );
 }
